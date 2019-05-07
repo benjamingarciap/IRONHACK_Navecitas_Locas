@@ -10,7 +10,7 @@ class Bullet {
     this.w = 19
     this.h = 19
     this.vx = 10;
-    this.vy = 10;
+    this.vy = 15;  
 
     this.gravity = 0.25;
   }

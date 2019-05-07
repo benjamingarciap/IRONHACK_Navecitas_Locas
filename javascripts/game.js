@@ -70,11 +70,11 @@ const Game = {
 
             //--checks for collisions player obstacle--//
             if (this.isCollisionObstaclePlayer()) {
-              console.log("crash player")
-              this.stop()
+                  this.stop()
             };
             //--checks for collisions bullets obstacle--//
             this.isCollisionObstacleBullet()
+            //console.log(this.player1.bullets)
             
 
             
@@ -148,12 +148,12 @@ const Game = {
 
   //--clear obstacles from array -- change x to y--//
   clearObstacles: function() {
-      /*this.obstacles = this.obstacles.filter(function(obstacle) {
+      this.obstacles = this.obstacles.filter(function(obstacle) {
         return obstacle.y >= 0;
-      });*/
-      if (this.obstacles.length > 15) {
+      });
+      /*if (this.obstacles.length > 15) {
         this.obstacles.pop()
-      }
+      }*/
   },
   
   //== COLLITION LOGIC ==// 
@@ -164,12 +164,12 @@ const Game = {
     // esto chequea que el personaje no estén en colisión con cualquier obstáculo
     return this.obstacles.some(obstacle => {
       return (
-        this.player1.x + this.player1.w >= obstacle.x && //Lateral derecha
-        this.player1.x <= obstacle.x + obstacle.w && // Lateral izquierda
-        this.player1.y + (this.player1.h - 60) >= obstacle.y && //
-        this.player1.y <= obstacle.y + obstacle.h
+        this.player1.x + (this.player1.w - 30) >= obstacle.x && //Lateral derecha
+        (this.player1.x + 30)<= obstacle.x + obstacle.w  && // Lateral izquierda
+        this.player1.y + this.player1.h >= obstacle.y && //
+        (this.player1.y + 30) <= obstacle.y + obstacle.h
       );
-    });
+    });  
   },
 
   //--bullet and obstacle collition logic--//
@@ -177,20 +177,21 @@ const Game = {
     
     this.obstacles.forEach((obstacle,idx) => {
       if(
-      this.player1.bullets.some(bullet => {
+      this.player1.bullets.some((bullet,idx) => {
         //console.log(bullet.w,bullet.h)
         console.log(bullet.w)
         return (
           bullet.x + (bullet.w  ) >= obstacle.x && //Lateral derecha
-          bullet.x  <= obstacle.x + obstacle.w   && // Lateral izquierda
+          (bullet.x) <= obstacle.x + obstacle.w   && // Lateral izquierda
           bullet.y + (bullet.h) >= obstacle.y &&
-          bullet.y <= obstacle.y + obstacle.h
+          (bullet.y + 30) <= obstacle.y + obstacle.h
 
         )  
       })
       ){
         this.obstacles.splice(idx, 1)
-        //console.log(this.obstacles)
+        this.player1.bullets.splice(idx, 3)
+        console.log(this.player1.bullets.pop())
 
         console.log("Man down")
       }

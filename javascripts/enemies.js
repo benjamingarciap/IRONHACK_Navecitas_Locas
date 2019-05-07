@@ -87,7 +87,7 @@ class Obstacle {
       this.img.src = "imgs/enemy_1-01.png";
       this.w = 50;
       this.h = 50;
-      this.dx = 1;
+      this.dx = 1.5;
       this.x = Math.floor(Math.random() * w);
       this.y = 0;  //playerY + playerH - this.h - 5;
     
