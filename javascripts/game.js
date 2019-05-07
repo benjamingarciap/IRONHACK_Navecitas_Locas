@@ -8,6 +8,7 @@ const Game = {
   fps: undefined,
   scoreBoard: undefined,
   framesCounter: 0,
+  obstacles: [],
   keys: {
     RIGHT_KEY: 39,
     LEFT_KEY: 37,
@@ -22,7 +23,6 @@ const Game = {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
         this.setDimensions();
-        this.setHandlers();
         this.start();
         
 
@@ -38,17 +38,10 @@ const Game = {
 
   },
 
-  //== DEFINES RESPONSIVE CANVAS ==// 
-  setHandlers: function () {
-
-        window.onresize = () => this.setDimensions()
-
-  },
-
   //== START INTERVAL METHOD ==// 
   start: function(){
 
-      this.fps = 60;
+      this.fps = 1000;
       this.reset() //<--- inizialize reset before interval 
 
       //--initilize interval--//
@@ -68,14 +61,33 @@ const Game = {
 
             //--move all iterations--//
             this.moveAll();
-            this.clearObstacles();
+            //this.clearObstacles();
 
             //--control obstacle generation times--//
             if (this.framesCounter % 300 === 0) {
                   this.generateObstacle();
             };
+
+            //--checks for collisions player obstacle--//
+            if (this.isCollisionObstaclePlayer()) {
+              console.log("crash player")
+              this.stop()
+            };
+            //--checks for collisions bullets obstacle--//
+            this.isCollisionObstacleBullet()
+            
+
+            
+      
              
-      })
+      }, 1000/ this.fps)
+  },
+
+  //== STOP METHOD ==//
+  stop: function() {
+
+    clearInterval(this.interval);
+
   },
 
   //== RESET ALL METHOD ==//
@@ -83,6 +95,7 @@ const Game = {
 
     //this.obstacle = new Obstacle(this.canvas.width, this.canvas.height, this.ctx, this.keys)
     this.background = new Background(this.winW, this.winH, this.ctx);
+    this.background2 = new Background2(this.winW, this.winH, this.ctx);
     this.player1 = new Player(this.canvas.width, this.canvas.height, this.ctx, this.keys);
     this.framesCounter = 0;
     this.obstacles = [];
@@ -98,10 +111,10 @@ const Game = {
 
   //== DRAW ALL METHOD ==// 
   drawAll: function() {
-
+       
         this.background.draw();
+        this.background2.draw();
         this.player1.draw(this.framesCounter);
-        //this.obstacle.draw();
         this.obstacles.forEach(function(obstacle) {
             obstacle.draw();
           });
@@ -112,6 +125,7 @@ const Game = {
    moveAll: function() {
         //--background movement--//
         this.background.move();
+        this.background2.move()
 
         //--listener inicialization player1--//
         this.player1.setListeners();
@@ -124,20 +138,67 @@ const Game = {
           });
 
   },
+
   //== PUSH OBSTACLES TO THE OBSTACLE ARRAY ==// 
   generateObstacle: function() {
     this.obstacles.push(
       new Obstacle(this.canvas.width, this.player1.y0, this.player1.h, this.ctx)
     );
   },
+
   //--clear obstacles from array -- change x to y--//
   clearObstacles: function() {
-      this.obstacles = this.obstacles.filter(function(obstacle) {
-        return obstacle.x >= 0;
-      });
-    },
+      /*this.obstacles = this.obstacles.filter(function(obstacle) {
+        return obstacle.y >= 0;
+      });*/
+      if (this.obstacles.length > 15) {
+        this.obstacles.pop()
+      }
+  },
+  
+  //== COLLITION LOGIC ==// 
+  //--obstacle and player collition logic--//
+  isCollisionObstaclePlayer: function() {
+    // colisiones genéricas
+    // (p.x + p.w > o.x && o.x + o.w > p.x && p.y + p.h > o.y && o.y + o.h > p.y )
+    // esto chequea que el personaje no estén en colisión con cualquier obstáculo
+    return this.obstacles.some(obstacle => {
+      return (
+        this.player1.x + this.player1.w >= obstacle.x && //Lateral derecha
+        this.player1.x <= obstacle.x + obstacle.w && // Lateral izquierda
+        this.player1.y + (this.player1.h - 60) >= obstacle.y && //
+        this.player1.y <= obstacle.y + obstacle.h
+      );
+    });
+  },
+
+  //--bullet and obstacle collition logic--//
+  isCollisionObstacleBullet: function() {
+    
+    this.obstacles.forEach((obstacle,idx) => {
+      if(
+      this.player1.bullets.some(bullet => {
+        //console.log(bullet.w,bullet.h)
+        console.log(bullet.w)
+        return (
+          bullet.x + (bullet.w  ) >= obstacle.x && //Lateral derecha
+          bullet.x  <= obstacle.x + obstacle.w   && // Lateral izquierda
+          bullet.y + (bullet.h) >= obstacle.y &&
+          bullet.y <= obstacle.y + obstacle.h
+
+        )  
+      })
+      ){
+        this.obstacles.splice(idx, 1)
+        //console.log(this.obstacles)
+
+        console.log("Man down")
+      }
+
+    })
+
+  },
   
   
   
-   
-}
+} 

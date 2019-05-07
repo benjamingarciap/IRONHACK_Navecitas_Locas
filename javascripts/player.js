@@ -45,7 +45,7 @@ class Player {
     
     //== DRAW METHOD ==// 
     draw(framesCounter) {
-     
+      //console.log(this.bullets)
       this.ctx.drawImage(
 
           this.img,
@@ -70,7 +70,11 @@ class Player {
           bullet.draw();
           bullet.move();
         
-      });
+        });
+        this.clearBullets()
+
+
+  
     }
 
     //== MOVE SHIP EVENTS LOGIC ==//
@@ -101,11 +105,11 @@ class Player {
           this.vy += 7;
           this.freezeFrameDown = true
         }
-        // shoots 
-        else if (this.keyCode == this.keys.SPACE_KEY & this.keyPress === true) {
-          this.shoot()
+        // // shoots 
+        // else if (this.keyCode == this.keys.SPACE_KEY & this.keyPress === true) {
+        //   this.shoot()
 
-        };
+        // };
 
     };
   
@@ -116,6 +120,8 @@ class Player {
 
             this.keyCode = e.keyCode
             this.keyPress = true;
+            if (this.keyCode == this.keys.SPACE_KEY) {
+              this.shoot()}
 
         }.bind(this);
         
@@ -132,15 +138,15 @@ class Player {
     //== CREATE BULLET AND PUSH TO ARRAY ==//
     shoot() {
       var bullet = new Bullet(
-        this.x + this.w / 2,
+        this.x + this.w / 3,
         this.y + this.h / 10,
         this.y0,
         this.h,
         this.ctx
       );
-  
+        
       this.bullets.push(bullet);
-    }
+    };
     
     //== CHANGES FRAMES AND MANIPULATION THE MODULO MAKES THE THREE FRAMES ANIMATION GO SLOWER OR FASTER ==//
     animateImg(framesCounter) {
@@ -158,9 +164,14 @@ class Player {
 
           //-- if its the last frame it begins again --//
           if (this.img.frameIndex > 2) this.img.frameIndex = 0;
-
-
       }
+    };
+
+    //--clear obstacles from array -- change x to y--//
+    clearBullets() {
+      this.bullets = this.bullets.filter(function(obstacle) {
+        return obstacle.y >= 0;
+      });
     }
 
 
