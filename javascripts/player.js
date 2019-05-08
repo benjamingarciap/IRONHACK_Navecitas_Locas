@@ -10,7 +10,7 @@ class Player {
         this.ctx = ctx;
         this.keys = keys;
         this.img = new Image();
-        this.img.src = "imgs/player_1-01ani-01.png";//"imgs/player_1-01ani-01.png";
+        this.img.src = "imgs/player_1-01ani-01.png";
 
         //--original player position--//
         this.x0 = this.canvasW * 0.45;
@@ -25,7 +25,7 @@ class Player {
         this.img.frameIndex = 0;
 
         //--player dimensions--//
-        this.w = 60;
+        this.w = 55;
         this.h = 60;
 
         //--movement velocity--//
@@ -36,8 +36,9 @@ class Player {
         this.bullets = [];
 
         //--keyPress array--//
-        this.keyPress = undefined;
-        this.keyCode = undefined;
+        //this.keyPress = undefined;
+        this.keyPress = []
+        this.keyCode = [];
         this.freezeFrameUp = false;
         this.freezeFrameDown = false;
 
@@ -72,6 +73,8 @@ class Player {
         
         });
         this.clearBullets()
+        //console.log(this.keyCode)
+       // console.log(this.keyPress)
 
 
   
@@ -81,28 +84,36 @@ class Player {
     moveShip(){
 
         //move right
-        if (this.keyCode == this.keys.RIGHT_KEY & this.keyPress === true) {
+        
+        if (this.x <= 600 && this.keyCode.includes(this.keys.RIGHT_KEY) && this.keyPress.includes(this.keys.RIGHT_KEY)) {
+        //if (this.keyCode.includes(this.keys.RIGHT_KEY) && this.keyPress === true) {
           this.x += 2;
-          this.vx += 7;
+          //this.vx += 7;
         }
 
         //move left
-        else if (this.keyCode == this.keys.LEFT_KEY & this.keyPress === true) {
+       
+         if (this.x >= 0 && this.keyCode.includes(this.keys.LEFT_KEY) && this.keyPress.includes(this.keys.LEFT_KEY)) {
+         //if (this.keyCode.includes(this.keys.LEFT_KEY) && this.keyPress === true) {
           this.x -= 2;
-          this.vx -= 7;
+          //this.vx -= 7;
         }
 
         //move up and keeps frame 0 of ship exaust long
-        else if (this.keyCode == this.keys.UP_KEY & this.keyPress === true) {
+
+         if (this.y >= 0 && this.keyCode.includes(this.keys.UP_KEY) && this.keyPress.includes(this.keys.UP_KEY)) {
+         //if (this.keyCode.includes(this.keys.UP_KEY) && this.keyPress === true) {
           this.y -= 2;
-          this.vy -= 7;
+          //this.vy -= 7;
           this.freezeFrameUp = true
         }
 
         //move down
-        else if (this.keyCode == this.keys.DOWN_KEY & this.keyPress === true) {
+        
+         if (this.y <= 900 && this.keyCode.includes(this.keys.DOWN_KEY) && this.keyPress.includes(this.keys.DOWN_KEY)) {
+         //if (this.keyCode.includes(this.keys.DOWN_KEY) && this.keyPress === true) {
           this.y += 2;
-          this.vy += 7;
+          //this.vy += 7;
           this.freezeFrameDown = true
         }
         // // shoots 
@@ -118,18 +129,22 @@ class Player {
 
         document.onkeydown = function(e) {
 
-            this.keyCode = e.keyCode
-            this.keyPress = true;
-            if (this.keyCode == this.keys.SPACE_KEY) {
+            //this.keyCode = e.keyCode
+            this.keyCode.push(e.keyCode)
+            //this.keyPress = true;
+            this.keyPress.push(e.keyCode)
+            if (this.keyCode.includes(this.keys.SPACE_KEY)) {
               this.shoot()}
+            
 
         }.bind(this);
         
-        document.onkeyup = function() {
-
-            this.keyPress = false;
-            this.freezeFrameUp = false //this returns freeze frame to false for the animation of the exaust
-            this.freezeFrameDown = false //this returns freeze frame to false for the animation of the exaust
+        document.onkeyup = function(e) {
+            this.keyCode.pop()
+            this.keyPress.splice(this.keyPress.indexOf(e.keyCode), 1)
+            //this.keyPress = false;
+            this.freezeFrameUp = false; //this returns freeze frame to false for the animation of the exaust
+            this.freezeFrameDown = false; //this returns freeze frame to false for the animation of the exaust
 
         }.bind(this);
 
