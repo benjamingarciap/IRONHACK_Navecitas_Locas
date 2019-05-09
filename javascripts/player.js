@@ -25,8 +25,8 @@ class Player {
         this.img.frameIndex = 0;
 
         //--player dimensions--//
-        this.w = 55;
-        this.h = 60;
+        this.w = 70;
+        this.h = 70;
 
         //--movement velocity--//
         this.vy = 1;
@@ -153,7 +153,7 @@ class Player {
     //== CREATE BULLET AND PUSH TO ARRAY ==//
     shoot() {
       var bullet = new Bullet(
-        this.x + this.w / 3,
+        this.x + this.w / 3.5,
         this.y + this.h / 10,
         this.y0,
         this.h,

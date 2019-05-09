@@ -7,8 +7,8 @@ class Bullet {
     this.r = 8; //<-- bullet size
     this.img = new Image();
     this.img.src = "imgs/bullet1.png";
-    this.w = 19
-    this.h = 19
+    this.w = 25
+    this.h = 25
     this.vx = 10;
     this.vy = 15;  
 
