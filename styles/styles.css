@@ -59,8 +59,16 @@ h1 {
 .btn-flicker {
   color:rgb(24, 47, 63);
 }
-/*
+
  body {
-  background-color: blue;
-} */
+  background-image: url(../imgs/retro.jpg);
+  color: rgb(245, 245, 245);
+  height: 95vh;
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  font-family: "Montserrat", sans serif;
+  text-align: center;
+} 
            
