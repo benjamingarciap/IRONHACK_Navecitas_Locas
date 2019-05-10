@@ -1,4 +1,4 @@
-//este literal mantiene el marcador del juego con su puntuación
+//Scoreboard logic
 var ScoreBoard = {
   ctx: undefined,
   init: function(ctx) {

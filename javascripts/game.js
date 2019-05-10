@@ -42,13 +42,14 @@ const Game = {
 
   //== START INTERVAL METHOD ==// 
   start: function(){
-
+      gameOverPause()
+      soundtrackPlay()
       this.fps = 1000;
       this.reset() //<--- inizialize reset before interval 
 
       //--initilize interval--//
       this.interval = setInterval( () => {
-
+          
             //--clear all interations--//
             this.clear();
             
@@ -134,7 +135,8 @@ const Game = {
 
   //== GAME OVER LOGIC ==// 
   gameOver: function() {
-
+    soundtrackPause()
+    deathPlay()
     this.stop();
     // colors rectangle white
     this.ctx.fillStyle = "white";

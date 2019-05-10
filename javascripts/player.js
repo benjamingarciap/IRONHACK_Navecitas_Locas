@@ -134,12 +134,14 @@ class Player {
             //this.keyPress = true;
             this.keyPress.push(e.keyCode)
             if (this.keyCode.includes(this.keys.SPACE_KEY)) {
+              shootPlay()
               this.shoot()}
             
 
         }.bind(this);
         
         document.onkeyup = function(e) {
+ 
             this.keyCode.pop()
             this.keyPress.splice(this.keyPress.indexOf(e.keyCode), 1)
             //this.keyPress = false;
@@ -159,7 +161,7 @@ class Player {
         this.h,
         this.ctx
       );
-        
+      
       this.bullets.push(bullet);
     };
     

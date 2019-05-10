@@ -1,5 +1,5 @@
 window.onload = function() {
-
+  
   //== DOM VARIABLES ==//
   let button = document.getElementById("button")
   let canvas = document.getElementById("canvas")
@@ -7,7 +7,7 @@ window.onload = function() {
   let header = document.getElementsByClassName("header")[0]
 
   //== BUTTON LOGIC ==//
-  button.onclick = (e)=> {
+    button.onclick = (e)=> {
     e.preventDefault()
     Game.init("canvas")
     canvas.classList.remove("display-none")
@@ -15,7 +15,7 @@ window.onload = function() {
     header.style.background = "none"
   }
   if(Game.isGameOver){
-    console.log("pepe")
+   
     setInterval( () => {
       button.classList.toggle("btn-flicker")
     },1000)
